@@ -30,6 +30,9 @@ Set-MsolUser -UserPrincipalName $upn -blockcredential $True
 # Let's disable remote powershell for the compromised user
 Set-User -Identity $upn -RemotePowerShellEnabled $false
 
+# Let’s Disable SMTP authenticated submission to prevent relaying mail via 365 using PowerShell or similar
+Set-CASMailbox $upn -SmtpClientAuthenticationDisabled $true
+
 # Let's change the user's password
 Add-Type -AssemblyName System.web
 $newPassword = ([System.Web.Security.Membership]::GeneratePassword(16,2))
